@@ -122,5 +122,5 @@ def Ag():
     # return drude_lorentz(wp,sig,f,gam,wav)
 
 def Au():
-    """Return gold material from MiePy Ag data"""
+    """Return gold material from MiePy Au data"""
     return load_material(miepy.__path__[0] + "/materials/au.dat")
