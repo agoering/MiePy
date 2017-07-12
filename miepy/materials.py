@@ -112,14 +112,14 @@ def drude_lorentz(wp, sig, f, gam, wav, magnetic_only=False):
 
 def Ag():
     """Return silver material from MiePy Ag data"""
-    # return load_material(miepy.__path__[0] + "/materials/ag.npy")
+    return load_material(miepy.__path__[0] + "/materials/ag.dat") # ag.dat is Johnson-Christy data
 
-    wp = 9.01
-    sig = [1.01889808, 0.62834151]
-    f = [0,5.05635462]
-    gam  = [0.01241231, 0.54965831]
-    wav = np.linspace(300,1100,1000)
-    return drude_lorentz(wp,sig,f,gam,wav)
+    # wp = 9.01
+    # sig = [1.01889808, 0.62834151]
+    # f = [0,5.05635462]
+    # gam  = [0.01241231, 0.54965831]
+    # wav = np.linspace(300,1100,1000)
+    # return drude_lorentz(wp,sig,f,gam,wav)
 
 def Au():
     """Return gold material from MiePy Ag data"""
