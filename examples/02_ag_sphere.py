@@ -41,3 +41,22 @@ plt.xlabel("Wavelength (nm)")
 plt.ylabel("Scattering Intensity")
 plt.show()
 
+# Figure 4: Absorption per multipole
+plt.figure(4)
+plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+plt.plot(m.wav,A,label="Total", linewidth=2)  #plot total absorption
+m.plot_absorption_modes(4)    #plots all modes up n=4
+plt.legend()
+plt.xlabel("Wavelength (nm)")
+plt.ylabel("Absorption Intensity")
+plt.show()
+
+# Figure 5: Extinction per multipole
+plt.figure(5)
+plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+plt.plot(m.wav,A+C,label="Total", linewidth=2)  #plot total extinction
+m.plot_extinction_modes(4)    #plots all modes up n=4
+plt.legend()
+plt.xlabel("Wavelength (nm)")
+plt.ylabel("Extinction Intensity")
+plt.show()

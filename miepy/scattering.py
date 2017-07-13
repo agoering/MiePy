@@ -57,10 +57,57 @@ class multipoles:
             scat[:,1,n-1] = self.mode_scattering('m', n)
         return scat
 
+    def mode_absorption(self, mtype, n):
+        """Get modal absorption intensity
+
+                mtype = 'e' or 'm'
+                n     = order"""
+
+        cn = self.an if mtype=='e' else self.bn
+        return 2*np.pi*(2*n+1)*np.real(cn[n-1])/self.k**2 - \
+        2*np.pi*(2*n+1)*np.abs(cn[n-1])**2/self.k**2
+
+    def absorption_array(self, nmax=None):
+        """Get modal absorption intensity for all modes
+           Return scat[Nfreq,2,nmax]"""
+
+        if nmax == None:
+            nmax = np.inf
+        nmax = min(self.an.shape[0], nmax)
+
+        absorb = np.zeros([self.Nfreq,2,nmax])
+        for n in range(1,nmax+1):
+            absorb[:,0,n-1] = self.mode_absorption('e', n)
+            absorb[:,1,n-1] = self.mode_absorption('m', n)
+        return absorb
+
+    def mode_extinction(self, mtype, n):
+        """Get modal extinction intensity
+
+                mtype = 'e' or 'm'
+                n     = order"""
+
+        cn = self.an if mtype=='e' else self.bn
+        return 2*np.pi*(2*n+1)*np.real(cn[n-1])/self.k**2
+
+    def extinction_array(self, nmax=None):
+        """Get modal extinction intensity for all modes
+           Return scat[Nfreq,2,nmax]"""
+
+        if nmax == None:
+            nmax = np.inf
+        nmax = min(self.an.shape[0], nmax)
+
+        extinc = np.zeros([self.Nfreq,2,nmax])
+        for n in range(1,nmax+1):
+            extinc[:,0,n-1] = self.mode_extinction('e', n)
+            extinc[:,1,n-1] = self.mode_extinction('m', n)
+        return extinc
+
     def scattering(self):
         """Get total scattering intensity using all coefficients an,bn
 
-           Return (scattering, absorbption) amplitudes"""
+           Return (scattering, absorption) amplitudes"""
 
         nmax = self.an.shape[0]
         nvals = 2*np.arange(1,nmax+1) + 1
@@ -77,6 +124,34 @@ class multipoles:
         """Plot scattering due to each mode up to nmax"""
 
         modes = self.scattering_array()
+        m_nmax = modes.shape[2]
+        nmax = min([nmax, m_nmax])
+
+        for i,mtype in enumerate(('e','m')):
+            for n in range(nmax):
+                label = get_label(i,n)
+                plt.plot(self.wav, modes[:,i,n], linewidth=2, label=label)
+
+        plt.legend()
+
+    def plot_absorption_modes(self, nmax): 
+        """Plot absorption due to each mode up to nmax"""
+
+        modes = self.absorption_array()
+        m_nmax = modes.shape[2]
+        nmax = min([nmax, m_nmax])
+
+        for i,mtype in enumerate(('e','m')):
+            for n in range(nmax):
+                label = get_label(i,n)
+                plt.plot(self.wav, modes[:,i,n], linewidth=2, label=label)
+
+        plt.legend()
+
+    def plot_extinction_modes(self, nmax): 
+        """Plot extinction due to each mode up to nmax"""
+
+        modes = self.extinction_array()
         m_nmax = modes.shape[2]
         nmax = min([nmax, m_nmax])
 
